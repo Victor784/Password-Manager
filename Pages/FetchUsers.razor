@@ -1,0 +1,50 @@
+﻿@page "/fetchusers"
+@using PasswordManagerClient.Services
+@inject UserApiClient usersApi
+@using ApiReturnTypes
+
+<PageTitle>Get All Students</PageTitle>
+
+<h1>Students</h1>
+
+<p>This component demonstrates fetching the students data from the API server. </p>
+<p>The API Server's base address is different from the web application's base address.</p>
+
+@if (students == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Created On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    <td>@student.email</td>
+                    <td>@student.name</td>
+                    <td>@student.surname</td>
+                    <td>@student.date_of_registration</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<User>? students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = await usersApi.GetUsersAsync();
+    }
+}
+view rawFetchData.razor hosted with ❤ by GitHub

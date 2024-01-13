@@ -1,0 +1,25 @@
+﻿<div>
+    <!-- Your form elements go here -->
+    <label>Email:</label>
+    <input type="text" @bind="email" />
+
+    <label>Password:</label>
+    <input type="text" @bind="password" />
+
+    <label>Expiration_date:</label>
+    <input type="text" @bind="exp_date" />
+
+    <button @onclick="SubmitForm">Submit</button>
+</div>
+
+@code {
+    private string email;
+    private string password;
+    private string exp_date;
+
+    private void SubmitForm()
+    {
+        // Handle form submission logic here
+        // You can send the data to your API or perform other actions
+    }
+}

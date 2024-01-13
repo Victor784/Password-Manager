@@ -1,0 +1,37 @@
+﻿@using ApiReturnTypes
+@using System
+@using PasswordManagerClient.Services
+@inject PasswordApiClient passwordApi
+
+
+
+<div>
+    <!-- Your form elements go here -->
+    <label>Email:</label>
+    <input type="text" @bind="email" />
+
+    <label>Password:</label>
+    <input type="text" @bind="password" />
+
+    <label>Expiration date:</label>
+
+
+    <button @onclick="SubmitAddForm">Add</button>
+</div>
+
+@code {
+    string PreferredPreference { get; set; } = "3 months";
+    IEnumerable<string> expiration_date_months = new[] { "1 month", "2 months", "3 months" };
+}
+@code {
+    private string email;
+    private string password;
+    private int exp_date = 3;
+
+    private async void SubmitAddForm()
+    {
+        //Instead of 1 we should use the user_id 
+        Password pass = new Password(1, email, password, /*DateTime.Now.Date.Ticks*/ 1, /*DateTime.Now.Date.Ticks*/1, exp_date);
+        var response = await passwordApi.AddPasswordAsync(pass);
+    }
+}
