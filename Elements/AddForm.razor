@@ -6,7 +6,9 @@
 
 
 <div>
-    <!-- Your form elements go here -->
+    <label>Website:</label>
+    <input type="text" @bind="website" />
+
     <label>Email:</label>
     <input type="text" @bind="email" />
 
@@ -14,9 +16,13 @@
     <input type="text" @bind="password" />
 
     <label>Expiration date:</label>
-
-
-    <button @onclick="SubmitAddForm">Add</button>
+    <input type="radio" name="exp_date" value="1 month"  />
+    <label>1 month</label>
+    <input type="radio" name="exp_date" value="2 months" />
+    <label>2 months</label>
+    <input type="radio" name="exp_date" value="3 months" />
+    <label>3 months</label>
+    <button class="btn btn-primary"  @onclick="SubmitAddForm">Add</button>
 </div>
 
 @code {
@@ -24,6 +30,7 @@
     IEnumerable<string> expiration_date_months = new[] { "1 month", "2 months", "3 months" };
 }
 @code {
+    private string website;
     private string email;
     private string password;
     private int exp_date = 3;
@@ -31,7 +38,7 @@
     private async void SubmitAddForm()
     {
         //Instead of 1 we should use the user_id 
-        Password pass = new Password(1, email, password, /*DateTime.Now.Date.Ticks*/ 1, /*DateTime.Now.Date.Ticks*/1, exp_date);
+        Password pass = new Password(1, website,  email, password, /*DateTime.Now.Date.Ticks*/ 1, /*DateTime.Now.Date.Ticks*/1, exp_date);
         var response = await passwordApi.AddPasswordAsync(pass);
     }
 }
