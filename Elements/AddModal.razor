@@ -1,0 +1,18 @@
+﻿@using BlazorBootstrap
+
+<Modal @ref="modal" Title="Modal title">
+    <BodyTemplate>
+        Modal body text goes here.
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary">Close</Button>
+        <Button Color="ButtonColor.Primary">Save changes</Button>
+    </FooterTemplate>
+
+</Modal>
+<Button Color="ButtonColor.Primary">Show Modal</Button>
+
+
+@code{
+    private Modal modal;
+}

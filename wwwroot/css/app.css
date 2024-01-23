@@ -101,3 +101,17 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.form-group {
+    margin-bottom: 10px; 
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px; 
+}
+
+input {
+    padding: 5px; 
+}

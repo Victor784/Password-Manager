@@ -6,23 +6,28 @@
 
 
 <div>
-    <label>Website:</label>
-    <input type="text" @bind="website" />
-
-    <label>Email:</label>
-    <input type="text" @bind="email" />
-
-    <label>Password:</label>
-    <input type="text" @bind="password" />
-
-    <label>Expiration date:</label>
-    <input type="radio" name="exp_date" value="1 month"  />
-    <label>1 month</label>
-    <input type="radio" name="exp_date" value="2 months" />
-    <label>2 months</label>
-    <input type="radio" name="exp_date" value="3 months" />
-    <label>3 months</label>
-    <button class="btn btn-primary"  @onclick="SubmitAddForm">Add</button>
+    <div class="form-group">
+        <label>Website:</label>
+        <input type="text" @bind="website" />
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="text" @bind="email" />
+    </div>
+    <div class="form-group">
+        <label>Password:</label>
+        <input type="text" @bind="password" />
+    </div>
+    <div class="form-group">
+        <label>Expiration date:</label>
+        <input type="radio" name="exp_date" value="1 month"  />
+        <label>1 month</label>
+        <input type="radio" name="exp_date" value="2 months" />
+        <label>2 months</label>
+        <input type="radio" name="exp_date" value="3 months" />
+        <label>3 months</label>
+    </div>
+    @*<button class="btn btn-primary"  @onclick="SubmitAddForm">Add</button>*@
 </div>
 
 @code {
@@ -35,7 +40,7 @@
     private string password;
     private string exp_date = "3";
 
-    private async void SubmitAddForm()
+    public async void SubmitAddForm()
     {
         //Instead of 1 we should use the user_id 
         Password pass = new Password(1, website,  email, password, /*DateTime.Now.Date.Ticks*/ "1", /*DateTime.Now.Date.Ticks*/"1", exp_date);
