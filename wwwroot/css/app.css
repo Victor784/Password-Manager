@@ -117,6 +117,20 @@ input {
 }
 
 .add_pass_modal_radio_btn {
+    margin-top: 7px;
     margin-right: 150px;
-    float: right
+    float: right;
+}
+
+.add_pass_form_buttons {
+
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; \
+}
+
+#save-button {
+    margin: 5px;
 }
