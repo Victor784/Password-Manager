@@ -51,7 +51,7 @@
     public  async Task SubmitAddForm()
     {
         //Instead of 1 we should use the user_id 
-        Password pass = new Password(1, website, email, password, /*DateTime.Now.Date.Ticks*/ "1", /*DateTime.Now.Date.Ticks*/"1", exp_date);
+        Password pass = new Password(1, website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
         var response = await passwordApi.AddPasswordAsync(pass);
         await CloseModalParent.InvokeAsync(response);
     }
