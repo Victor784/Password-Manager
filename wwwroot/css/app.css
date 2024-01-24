@@ -115,3 +115,8 @@ label {
 input {
     padding: 5px; 
 }
+
+.add_pass_modal_radio_btn {
+    margin-right: 150px;
+    float: right
+}

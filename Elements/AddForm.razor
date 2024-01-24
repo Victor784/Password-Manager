@@ -20,12 +20,18 @@
     </div>
     <div class="form-group">
         <label>Expiration date:</label>
-        <input type="radio" name="exp_date" value="1 month"  />
-        <label>1 month</label>
-        <input type="radio" name="exp_date" value="2 months" />
-        <label>2 months</label>
-        <input type="radio" name="exp_date" value="3 months" />
-        <label>3 months</label>
+        <div class="label_radio_btn_element">
+            <label>1 month</label>
+            <input class = "add_pass_modal_radio_btn" type="radio" name="exp_date" value="1 month"  />
+        </div>
+        <div class="label_radio_btn_element">
+            <label>2 months</label>
+            <input class="add_pass_modal_radio_btn" type="radio" name="exp_date" value="2 months" />
+        </div>
+        <div class="label_radio_btn_element">
+            <label>3 months</label>
+            <input class="add_pass_modal_radio_btn"  type="radio" name="exp_date" value="3 months" />
+        </div>
     </div>
     @*<button class="btn btn-primary"  @onclick="SubmitAddForm">Add</button>*@
 </div>
