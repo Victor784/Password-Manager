@@ -1,25 +1,200 @@
-﻿<div>
-    <!-- Your form elements go here -->
-    <label>Email:</label>
-    <input type="text" @bind="email" />
+﻿@using ApiReturnTypes
+@using System
+@using PasswordManagerClient.Services
+@using BlazorBootstrap
+@inject PasswordApiClient passwordApi
 
-    <label>Password:</label>
-    <input type="text" @bind="password" />
 
-    <label>Expiration_date:</label>
-    <input type="text" @bind="exp_date" />
+<div>
 
-    <button @onclick="SubmitForm">Submit</button>
+    <div class="form-group">
+        <label>Website:</label>
+        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "website")' value="@CurrentWebsite" />
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "email")' value="@CurrentEmail" />
+    </div>
+    <div class="form-group">
+        <label>Password:</label>
+        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "password")' value="@CurrentPassword"/>
+    </div>
+    @*<div class="form-group">
+        <label>Expiration date:</label>
+        <InputRadioGroup @bind-Value="@exp_date" @onchange="EnableSaveBtnState">
+            <div class="label_radio_btn_element">
+                <label>1 month</label> <InputRadio Value="@("1 month")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
+            </div>
+            <div class="label_radio_btn_element">
+                <label>2 months</label> <InputRadio Value="@("2 months")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
+            </div>
+            <div class="label_radio_btn_element">
+                <label>3 months</label> <InputRadio Value="@("3 months")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
+            </div>
+        </InputRadioGroup> 
+    </div>*@
+    <div class="form-group">
+        <label>Expiration date:</label>
+        <div class="label_radio_btn_element">
+        <label>1 month</label>
+        <input class="add_pass_modal_radio_btn" type="radio" checked="@(exp_date == "1 month")"
+                   name="Gender" @onchange='() => HandleRadioButtonClicked ("1 month")' />
+        </div>
+        <div class="label_radio_btn_element">
+        <label>2 months</label>
+            <input class="add_pass_modal_radio_btn"  type="radio" checked="@(exp_date == "2 months")"
+                   name="Gender" @onchange='() => HandleRadioButtonClicked ("2 months")' />
+        </div>
+        <div class="label_radio_btn_element">
+        <label>3 months</label>
+        <input class="add_pass_modal_radio_btn" type="radio" checked="@(exp_date == "3 months")"
+                   name="Gender" @onchange='() => HandleRadioButtonClicked ("3 months")' />
+        </div>
+
+    </div>
+    <div>
+        <p>Days until expiration: @daysUntilExpiration</p>
+    </div>
+    <div class="add_pass_form_buttons">
+        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitUpdateForm" Disabled="@dataWasNotChangedByUser">Save changes</Button>
+        <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
+    </div>
 </div>
 
 @code {
+    [Parameter]
+    public EventCallback<int> CloseModalParent { get; set; }
+    [Parameter]
+    public Password PasswordToBeChanged { get; set; }
+
+    private string website;
     private string email;
     private string password;
     private string exp_date;
+    private  uint daysUntilExpiration = 0;
+    bool dataWasNotChangedByUser = true;
+    string CurrentWebsite = "";
+    string CurrentEmail = "";
+    string CurrentPassword = "";
 
-    private void SubmitForm()
+    uint calculateDaysUntilExpiration(string startDate, string endDate, string monthsUntillExpiration)
     {
-        // Handle form submission logic here
-        // You can send the data to your API or perform other actions
+        var t1 = DateTime.Parse( startDate );
+        var t2 = DateTime.Parse(endDate);
+        var nrOfMonths = getNrOfMonthsFromString(monthsUntillExpiration);
+        var t3 = t1.AddMonths(nrOfMonths);
+        double ret = (t3 - t2).TotalDays;
+        if (ret <= 0)
+            return 0;
+        else
+            return (uint)ret;
     }
+
+    int getNrOfMonthsFromString(string monthsUntillExpiration)
+    {
+        switch(monthsUntillExpiration)
+        {
+            case "1 month":
+                return 1;
+            case "2 months":
+                return 2;
+            case "3 months":
+                return 3;
+            default:
+                return 1;
+        }
+    }
+
+    public async Task SubmitUpdateForm()
+    {
+        //HERE THERE SHOULD BE THE ACTUAL UPDATE LOGIC FOR THE FORM
+        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
+        var response = await passwordApi.updatePassword(PasswordToBeChanged.user_id, updatedPassword);
+        await CloseModalParent.InvokeAsync(response);
+    }
+
+    public async void CloseModal()
+    {
+        await CloseModalParent.InvokeAsync(-1);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        website = PasswordToBeChanged.associated_website;
+        email = PasswordToBeChanged.associated_email;
+        password = PasswordToBeChanged.password_value;
+        daysUntilExpiration = calculateDaysUntilExpiration(PasswordToBeChanged.time_of_last_update, DateTime.Now.Date.ToString("dd-MMM-yyyy"), PasswordToBeChanged.expiration_date);
+        dataWasNotChangedByUser = true;
+        CurrentWebsite = website;
+        CurrentEmail = email;
+        CurrentPassword = password;
+
+    }
+
+    void CheckForUpdateAndUpdateSaveBtnState(ChangeEventArgs e , string inputName)
+    {
+        switch(inputName)
+        {
+            case "website":
+                {
+                    if (e.Value.ToString() != PasswordToBeChanged.associated_website)
+                        EnableSaveBtnState();
+                    else
+                        dataWasNotChangedByUser = true;
+                    website = e.Value.ToString();
+                    break;
+                }
+            case "email":
+                {
+                    if (e.Value.ToString() != PasswordToBeChanged.associated_email)
+                        EnableSaveBtnState();
+                    else
+                        dataWasNotChangedByUser = true;
+                    email = e.Value.ToString();
+                    break;
+                }
+            case "password":
+                {
+                    if (e.Value.ToString() != PasswordToBeChanged.password_value)
+                        EnableSaveBtnState();
+                    else
+                        dataWasNotChangedByUser = true;
+                    password = e.Value.ToString();
+                    break;
+                }
+        }
+    }
+
+    void EnableSaveBtnState()
+    {
+        dataWasNotChangedByUser = false;
+    }
+
+    void HandleRadioButtonClicked(string selectedButton)
+    {
+        switch(selectedButton)
+        {
+            case "1 month":
+                {
+                    exp_date = "1 month";
+                    dataWasNotChangedByUser = false;
+                    break;
+                }
+            case "2 months":
+                {
+                    exp_date = "2 months";
+                    dataWasNotChangedByUser = false;
+                    break;
+                }
+            case "3 months":
+                {
+                    exp_date = "3 months";
+                    dataWasNotChangedByUser = false;
+                    break;
+                }
+        }
+    }
+
 }

@@ -134,3 +134,7 @@ input {
 #save-button {
     margin: 5px;
 }
+
+tr:hover {
+    background: yellow;
+}
