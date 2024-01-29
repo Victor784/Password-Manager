@@ -39,13 +39,32 @@ namespace PasswordManagerClient.Services
             {
                 var response = await httpClient.PostAsJsonAsync("api/passwords", password);
 
-                var debug = response.Content.ReadAsStringAsync();
-
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine(response);
                     var createdPasswordId = await response.Content.ReadFromJsonAsync<int>();
                     return createdPasswordId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return -1;
+        }
+
+        public async Task<int> UpdatePasswordAsync(int id, Password password)
+        {
+            try
+            {
+                var response = await httpClient.PutAsJsonAsync("api/passwords/" + id.ToString(), password);
+
+                var debug = response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(response);
+                    return (int)response.StatusCode;
                 }
             }
             catch (Exception ex)

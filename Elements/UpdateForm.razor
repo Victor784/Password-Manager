@@ -109,7 +109,7 @@
     {
         //HERE THERE SHOULD BE THE ACTUAL UPDATE LOGIC FOR THE FORM
         Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
-        var response = await passwordApi.updatePassword(PasswordToBeChanged.user_id, updatedPassword);
+        var response = await passwordApi.UpdatePasswordAsync(PasswordToBeChanged.user_id, updatedPassword);
         await CloseModalParent.InvokeAsync(response);
     }
 
