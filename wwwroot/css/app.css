@@ -136,9 +136,18 @@ input {
 }
 
 tr:hover {
-    background: yellow;
+    background: #f0f0f0;
 }
 
 .delete_pass_modal_btns{
-    margin-left: 60px
+    margin-left: 60px;
+}
+
+.datagrid_column{
+    margin-left: 5px;
+    margin-right: 5px;
+    border: solid;
+    border-width: 1px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
