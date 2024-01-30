@@ -74,5 +74,26 @@ namespace PasswordManagerClient.Services
             return -1;
         }
 
+        public async Task<int> DeletePasswordAsync(int id)
+        {
+            try
+            {
+                var response = await httpClient.DeleteAsync("api/passwords/" + id.ToString());
+
+                var debug = response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine(response);
+                    return (int)response.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return -1;
+        }
+
     }
 }

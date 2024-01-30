@@ -19,20 +19,6 @@
         <label>Password:</label>
         <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "password")' value="@CurrentPassword"/>
     </div>
-    @*<div class="form-group">
-        <label>Expiration date:</label>
-        <InputRadioGroup @bind-Value="@exp_date" @onchange="EnableSaveBtnState">
-            <div class="label_radio_btn_element">
-                <label>1 month</label> <InputRadio Value="@("1 month")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
-            </div>
-            <div class="label_radio_btn_element">
-                <label>2 months</label> <InputRadio Value="@("2 months")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
-            </div>
-            <div class="label_radio_btn_element">
-                <label>3 months</label> <InputRadio Value="@("3 months")" class="add_pass_modal_radio_btn" @onactivate="EnableSaveBtnState" />
-            </div>
-        </InputRadioGroup> 
-    </div>*@
     <div class="form-group">
         <label>Expiration date:</label>
         <div class="label_radio_btn_element">

@@ -128,7 +128,7 @@ input {
     display: flex;
     flex-direction: column; 
     align-items: center; 
-    justify-content: center; \
+    justify-content: center;
 }
 
 #save-button {
@@ -137,4 +137,8 @@ input {
 
 tr:hover {
     background: yellow;
+}
+
+.delete_pass_modal_btns{
+    margin-left: 60px
 }
