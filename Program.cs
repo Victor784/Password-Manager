@@ -14,5 +14,5 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseA
 builder.Services.AddScoped<UserApiClient>();
 builder.Services.AddScoped<PasswordApiClient>();
 builder.Services.AddBlazorBootstrap();
-
+builder.Services.AddScoped<IClipboardService, ClipboardService>();
 await builder.Build().RunAsync();
