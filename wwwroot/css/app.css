@@ -16,9 +16,9 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+/*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+}*/
 
 .content {
     padding-top: 1.1rem;
@@ -122,7 +122,7 @@ input {
     float: right;
 }
 
-.add_pass_form_buttons {
+.form_buttons_group {
 
     margin-top: 5px;
     display: flex;
@@ -135,8 +135,21 @@ input {
     margin: 5px;
 }
 
-tr:hover {
+tr.table_row:hover {
     background: #f0f0f0;
+}
+
+.table_row {
+    height: 42px;
+    max-height: 30px;
+    min-height: 30px;
+}
+
+td {
+    height: 30px;
+    max-height: 30px;
+    padding: 50px;
+    margin: 0px;
 }
 
 .delete_pass_modal_btns{
@@ -150,6 +163,7 @@ tr:hover {
     border-width: 1px;
     padding-left: 20px;
     padding-right: 20px;
+    height: 30px;
 }
 
 #container_footer {
@@ -165,4 +179,30 @@ tr:hover {
     max-height: 30px;
     position: fixed;
     bottom: 0;
+}
+
+.special_btn {
+    width: 26px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+
+.table
+{
+    width: 1000px;
+}
+
+.column_with_btns
+{
+    width: 56px;
+
+}
+
+tr.table_header_row {
+    color: white;
+    background: grey;
 }

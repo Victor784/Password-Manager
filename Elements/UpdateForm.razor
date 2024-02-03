@@ -41,7 +41,7 @@
     <div>
         <p>Days until expiration: @daysUntilExpiration</p>
     </div>
-    <div class="add_pass_form_buttons">
+    <div class="form_buttons_group">
         <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitUpdateForm" Disabled="@dataWasNotChangedByUser">Save changes</Button>
         <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
     </div>
@@ -52,6 +52,9 @@
     public EventCallback<int> CloseModalParent { get; set; }
     [Parameter]
     public Password PasswordToBeChanged { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateTable { get; set; }
 
     private string website;
     private string email;
@@ -65,7 +68,7 @@
 
     uint calculateDaysUntilExpiration(string startDate, string endDate, string monthsUntillExpiration)
     {
-        var t1 = DateTime.Parse( startDate );
+        var t1 = DateTime.Parse(startDate);
         var t2 = DateTime.Parse(endDate);
         var nrOfMonths = getNrOfMonthsFromString(monthsUntillExpiration);
         var t3 = t1.AddMonths(nrOfMonths);
@@ -93,9 +96,9 @@
 
     public async Task SubmitUpdateForm()
     {
-        //HERE THERE SHOULD BE THE ACTUAL UPDATE LOGIC FOR THE FORM
-        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
+        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), (exp_date != "") ? exp_date : PasswordToBeChanged.expiration_date);
         var response = await passwordApi.UpdatePasswordAsync(PasswordToBeChanged.user_id, updatedPassword);
+        await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);
     }
 

@@ -20,9 +20,9 @@ namespace PasswordManagerClient.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var password = await response.Content.ReadFromJsonAsync<List<Password>>();
-                    Console.WriteLine(password);
-                    return password;
+                    var passwords = await response.Content.ReadFromJsonAsync<List<Password>>();
+                    Console.WriteLine(passwords);
+                    return passwords;
                 }
             }
             catch (Exception ex)

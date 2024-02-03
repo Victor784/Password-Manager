@@ -33,7 +33,7 @@
             </div>
         </InputRadioGroup>
     </div>
-    <div class="add_pass_form_buttons">
+    <div class="form_buttons_group">
         <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm">Save changes</Button>
         <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
     </div>
@@ -46,13 +46,15 @@
     private string exp_date = "1 month";
     [Parameter]
     public EventCallback<int> CloseModalParent { get; set; }
-
+    [Parameter]
+    public EventCallback UpdateTable { get; set; }
 
     public  async Task SubmitAddForm()
     {
         //Instead of 1 we should use the user_id 
         Password pass = new Password(1, website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
         var response = await passwordApi.AddPasswordAsync(pass);
+        await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);
     }
 
