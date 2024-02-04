@@ -3,7 +3,7 @@
 @using PasswordManagerClient.Services
 @using BlazorBootstrap
 @inject PasswordApiClient passwordApi
-
+@inject ExpirationCalculator expirationCalculator
 
 <div>
 
@@ -60,39 +60,13 @@
     private string email;
     private string password;
     private string exp_date;
-    private  uint daysUntilExpiration = 0;
+    private  string daysUntilExpiration = "";
     bool dataWasNotChangedByUser = true;
     string CurrentWebsite = "";
     string CurrentEmail = "";
     string CurrentPassword = "";
 
-    uint calculateDaysUntilExpiration(string startDate, string endDate, string monthsUntillExpiration)
-    {
-        var t1 = DateTime.Parse(startDate);
-        var t2 = DateTime.Parse(endDate);
-        var nrOfMonths = getNrOfMonthsFromString(monthsUntillExpiration);
-        var t3 = t1.AddMonths(nrOfMonths);
-        double ret = (t3 - t2).TotalDays;
-        if (ret <= 0)
-            return 0;
-        else
-            return (uint)ret;
-    }
-
-    int getNrOfMonthsFromString(string monthsUntillExpiration)
-    {
-        switch(monthsUntillExpiration)
-        {
-            case "1 month":
-                return 1;
-            case "2 months":
-                return 2;
-            case "3 months":
-                return 3;
-            default:
-                return 1;
-        }
-    }
+    
 
     public async Task SubmitUpdateForm()
     {
@@ -114,7 +88,7 @@
         website = PasswordToBeChanged.associated_website;
         email = PasswordToBeChanged.associated_email;
         password = PasswordToBeChanged.password_value;
-        daysUntilExpiration = calculateDaysUntilExpiration(PasswordToBeChanged.time_of_last_update, DateTime.Now.Date.ToString("dd-MMM-yyyy"), PasswordToBeChanged.expiration_date);
+        daysUntilExpiration = expirationCalculator.CalculateDaysUntilExpiration(PasswordToBeChanged.time_of_last_update, DateTime.Now.Date.ToString("dd-MMM-yyyy"), PasswordToBeChanged.expiration_date);
         dataWasNotChangedByUser = true;
         CurrentWebsite = website;
         CurrentEmail = email;

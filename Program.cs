@@ -15,4 +15,5 @@ builder.Services.AddScoped<UserApiClient>();
 builder.Services.AddScoped<PasswordApiClient>();
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<IClipboardService, ClipboardService>();
+builder.Services.AddScoped<ExpirationCalculator>();
 await builder.Build().RunAsync();
