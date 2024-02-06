@@ -20,8 +20,8 @@
         <input type="text" @bind="password" />
     </div>
     <div class="form-group">
-        <label>Expiration date:</label>
-        <InputRadioGroup @bind-Value="@exp_date">
+        <label>Password lifetime :</label>
+        <InputRadioGroup @bind-Value="@months_until_expired">
             <div class="label_radio_btn_element">
                 <label>1 month</label> <InputRadio Value="@("1 month")" class="add_pass_modal_radio_btn" />
             </div>
@@ -43,7 +43,7 @@
     private string website;
     private string email;
     private string password;
-    private string exp_date = "1 month";
+    private string months_until_expired = "1 month";
     [Parameter]
     public EventCallback<int> CloseModalParent { get; set; }
     [Parameter]
@@ -52,7 +52,7 @@
     public  async Task SubmitAddForm()
     {
         //Instead of 1 we should use the user_id 
-        Password pass = new Password(1, website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), exp_date);
+        Password pass = new Password(1, website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), months_until_expired);
         var response = await passwordApi.AddPasswordAsync(pass);
         await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);

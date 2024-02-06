@@ -20,7 +20,7 @@
         <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "password")' value="@CurrentPassword"/>
     </div>
     <div class="form-group">
-        <label>Expiration date:</label>
+        <label>Password lifetime:</label>
         <div class="label_radio_btn_element">
         <label>1 month</label>
         <input class="add_pass_modal_radio_btn" type="radio" checked="@(exp_date == "1 month")"
@@ -39,7 +39,7 @@
 
     </div>
     <div>
-        <p>Days until expiration: @daysUntilExpiration</p>
+        <p>Expires in : @daysUntilExpiration</p>
     </div>
     <div class="form_buttons_group">
         <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitUpdateForm" Disabled="@dataWasNotChangedByUser">Save changes</Button>
@@ -70,7 +70,7 @@
 
     public async Task SubmitUpdateForm()
     {
-        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), (exp_date != "") ? exp_date : PasswordToBeChanged.expiration_date);
+        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), (exp_date != "") ? exp_date : PasswordToBeChanged.months_until_expired);
         var response = await passwordApi.UpdatePasswordAsync(PasswordToBeChanged.user_id, updatedPassword);
         await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);
@@ -88,7 +88,7 @@
         website = PasswordToBeChanged.associated_website;
         email = PasswordToBeChanged.associated_email;
         password = PasswordToBeChanged.password_value;
-        daysUntilExpiration = expirationCalculator.CalculateDaysUntilExpiration(PasswordToBeChanged.time_of_last_update, DateTime.Now.Date.ToString("dd-MMM-yyyy"), PasswordToBeChanged.expiration_date);
+        daysUntilExpiration = expirationCalculator.CalculateDaysUntilExpiration(PasswordToBeChanged.time_of_last_update, DateTime.Now.Date.ToString("dd-MMM-yyyy"), PasswordToBeChanged.months_until_expired);
         dataWasNotChangedByUser = true;
         CurrentWebsite = website;
         CurrentEmail = email;
