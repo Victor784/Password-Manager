@@ -202,3 +202,33 @@ tr.table_header_row {
     color: white;
     background: grey;
 }
+
+.search_input {
+    border: 1px solid #ccc; /* Grey border */
+    border-radius: 14px; /* Rounded corners */
+    padding: 6px; /* Padding */
+    width: 120px;
+    height: 30px;
+    margin-left: 30px;
+}
+
+    .search_input::placeholder {
+        font-style: italic; /* Make the text italic */
+        text-align: right; /* Align the text to the right */
+    }
+
+
+.top_of_the_table_row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.search_input:focus {
+    border-width: 3px;
+    border-color: #007bff;
+}
+
+.show_only_expired_checkbox_and_label{
+    margin-left: 100px;
+}
