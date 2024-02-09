@@ -132,7 +132,7 @@ input {
 }
 
 tr.table_row:hover {
-    background: #f0f0f0;
+    background: rgba(200,255,255,0.1);
 }
 
 .table_row {
@@ -225,10 +225,52 @@ tr.table_header_row {
 }
 
 .search_input:focus {
-    border-width: 3px;
-    border-color: #007bff;
+    border-width: 1px;
+    border-color: white;
 }
 
 .show_only_expired_checkbox_and_label{
     margin-left: 100px;
+}
+
+.login_box {
+    border : solid;
+    border-width: 1px;
+    width: 500px;
+    height: 500px;
+    padding: 100px;
+    border-radius: 25px;
+}
+
+.login_links {
+    display: flex;
+    margin-top: 15px;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.register_box {
+    border: solid;
+    border-width: 1px;
+    width: 500px;
+    height: 600px;
+    padding: 100px;
+    border-radius: 25px;
+}
+
+.forgot_password_box {
+    border: solid;
+    border-width: 1px;
+    width: 500px;
+    height: 300px;
+    padding: 100px;
+    border-radius: 25px;
+}
+
+.container_for_box_centering {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+}
 }
