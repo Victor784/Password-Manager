@@ -4,6 +4,7 @@
 @using BlazorBootstrap
 @inject PasswordApiClient passwordApi
 @inject IClipboardService ClipboardService
+@inject PasswordGenerator randomPasswordGenerator
 
 <div>
 
@@ -18,6 +19,7 @@
     <div class="form-group">
         <label style=" display: flex">Password:
             <div class="password_small_buttons" style="width: 100px ; height: 24px">
+                <Button class="btn special_btn" @onclick="GenerateRandomPass"><Icon Name="IconName.CaretRightSquare" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
                 @if (passInputHasText)
                 {
 
@@ -27,7 +29,7 @@
                 }
             </div>
         </label>
-        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" />
+        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password"/>
     </div>
     <div class="form-group">
         <label>Password lifetime :</label>
@@ -96,11 +98,18 @@
         {
             passwordInputType = "password";
         }
-        
+
     }
 
     async void CopyPasswordToClipboard(string copied_pass)
     {
         await ClipboardService.CopyToClipboard(copied_pass);
+    }
+
+    public Task GenerateRandomPass()
+    {
+        password = randomPasswordGenerator.generateRandomPassword();
+        passInputHasText = true;
+        return Task.CompletedTask;
     }
 }
