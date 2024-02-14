@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@using Elements
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -10,7 +12,7 @@
                 <BlazorBootstrap.Button class="main_layout_btn">Log out</BlazorBootstrap.Button>
              </NavLink>
             
-            <BlazorBootstrap.Button class = "main_layout_btn" >Display</BlazorBootstrap.Button>
+            <PasswordManagerClient.Elements.StylesDropDownMenu />
         </div>
 
         <article class="content px-4">
