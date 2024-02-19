@@ -4,6 +4,8 @@
 @using BlazorBootstrap
 @inject PasswordApiClient passwordApi
 @inject ExpirationCalculator expirationCalculator
+@inject IClipboardService ClipboardService
+@inject PasswordGenerator randomPasswordGenerator
 
 <div>
 
@@ -16,8 +18,20 @@
         <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "email")' value="@CurrentEmail" />
     </div>
     <div class="form-group">
-        <label>Password:</label>
-        <input type="password" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "password")' value="@CurrentPassword"/>
+        <label style=" display: flex">
+            Password:
+            <div class="password_small_buttons" style="width: 100px ; height: 24px">
+                <Button class="btn special_btn" @onclick="GenerateRandomPass"><Icon Name="IconName.CaretRightSquare" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                @if (passInputHasText)
+                {
+
+                    <Button class="btn special_btn" @onclick="SwitchPasswordVisibility"><Icon Name="@(passwordInputType == "password" ? IconName.Eye : IconName.EyeFill)" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                    <Button class="btn special_btn" @onclick="(e) => CopyPasswordToClipboard(password)"><Icon Name="IconName.Copy" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+
+                }
+            </div>
+        </label>
+        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password" />
     </div>
     <div class="form-group">
         <label>Password lifetime:</label>
@@ -48,6 +62,8 @@
 </div>
 
 @code {
+    private string passwordInputType = "password";
+    private bool passInputHasText = false;
     [Parameter]
     public EventCallback<int> CloseModalParent { get; set; }
     [Parameter]
@@ -158,6 +174,40 @@
                     break;
                 }
         }
+    }
+    public void ManagePasswordInputChange(ChangeEventArgs e)
+    {
+        password = e.Value.ToString();
+        if (password != "")
+            passInputHasText = true;
+        else
+            passInputHasText = false;
+        StateHasChanged();
+    }
+
+    public async void SwitchPasswordVisibility()
+    {
+        if (passwordInputType == "password")
+        {
+            passwordInputType = "text";
+        }
+        else if (passwordInputType == "text")
+        {
+            passwordInputType = "password";
+        }
+
+    }
+
+    async void CopyPasswordToClipboard(string copied_pass)
+    {
+        await ClipboardService.CopyToClipboard(copied_pass);
+    }
+
+    public Task GenerateRandomPass()
+    {
+        password = randomPasswordGenerator.generateRandomPassword();
+        passInputHasText = true;
+        return Task.CompletedTask;
     }
 
 }
