@@ -15,11 +15,12 @@
             }
             else if(res <= 59)
             {
-                return "1 month " + (res - 30).ToString() + " days";
+                string myStr = "1 month " + (res - 28).ToString() + " days";
+                return myStr;
             }
             else if(res <= 89)
             {
-                return "2 months " + (res - 60).ToString() + " days";
+                return "2 months " + (res - 56).ToString() + " days";
             }
             else
             {
