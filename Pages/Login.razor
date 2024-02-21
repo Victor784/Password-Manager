@@ -1,4 +1,5 @@
-﻿@page "/login"
+﻿@page "/"
+@page "/login"
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
 
@@ -35,7 +36,7 @@
     private void Authenticate()
     {
             @* .... perform authentication using _credential fields*@
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/fetchpasswords");
     }
 }
 </div>
