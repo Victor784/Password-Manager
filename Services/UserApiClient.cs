@@ -43,7 +43,7 @@ namespace PasswordManagerClient.Services
 
                 var credentials = new
                 {
-                    Username = email,
+                    Email = email,
                     Password = password
                 };
 
