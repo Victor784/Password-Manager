@@ -1,5 +1,8 @@
 ﻿using PasswordManagerClient.ApiReturnTypes;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
 
 namespace PasswordManagerClient.Services
 {
@@ -31,6 +34,40 @@ namespace PasswordManagerClient.Services
             }
 
             return new List<User>();
+        }
+
+        public async Task<bool> AuthenticateAsync(string email, string password)
+        {
+            try
+            {
+
+                var credentials = new
+                {
+                    Username = email,
+                    Password = password
+                };
+
+                var json = JsonSerializer.Serialize(credentials);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("api/users/auth", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
         }
     }
 }

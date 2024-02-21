@@ -10,7 +10,7 @@
         public string? name { get; set; }
         public string? surname { get; set; }
 
-        public long date_of_registration { get; set; } // stored as time since epoch 
+        public string? date_of_registration { get; set; } // stored as time since epoch 
 
         public bool? is_active { get; set; } = null;
 
