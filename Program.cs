@@ -17,4 +17,6 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<IClipboardService, ClipboardService>();
 builder.Services.AddScoped<ExpirationCalculator>();
 builder.Services.AddScoped<PasswordGenerator>();
+builder.Services.AddScoped<AuthenticationService>();
+
 await builder.Build().RunAsync();

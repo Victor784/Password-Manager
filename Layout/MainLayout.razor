@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using Elements
 
+@inject Services.AuthenticationService AuthManager;
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -9,7 +11,7 @@
     <main>
         <div class="top-row px-4 gradient-border-bottom">
              <NavLink class="nav-link" href="login">
-                <BlazorBootstrap.Button class="main_layout_btn">Log out</BlazorBootstrap.Button>
+                <BlazorBootstrap.Button class="main_layout_btn" @onclick="LogOutUser">Log out</BlazorBootstrap.Button>
              </NavLink>
             
             <PasswordManagerClient.Elements.StylesDropDownMenu />
@@ -22,3 +24,12 @@
     </main>
     
 </div>
+
+@code{
+
+    private void LogOutUser()
+    {
+        AuthManager.DeauthenticateUser();
+    }
+
+}

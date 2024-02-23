@@ -1,5 +1,18 @@
 ﻿@page "/about"
 
+@inject NavigationManager NavigationManager;
+@inject Services.AuthenticationService AuthManager;
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!AuthManager.IsUserAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}
+
 <PageTitle>About</PageTitle>
 
 <p>This app was built using different technologies , below you can find a list of them: </p>

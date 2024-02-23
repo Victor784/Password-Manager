@@ -3,6 +3,21 @@
 @inject UserApiClient usersApi
 @using ApiReturnTypes
 
+
+@inject NavigationManager NavigationManager;
+@inject Services.AuthenticationService AuthManager;
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!AuthManager.IsUserAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}
+
+
 <PageTitle>Get All Students</PageTitle>
 
 <h1>Students</h1>

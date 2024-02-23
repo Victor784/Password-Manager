@@ -7,7 +7,7 @@
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
 @inject UserApiClient userApi
-
+@inject Services.AuthenticationService AuthManager;
 
 <div class="login_page">
     <div class="text-center">
@@ -44,7 +44,11 @@
             @* .... perform authentication using _credential fields*@
             bool loginSuccesfull = await userApi.AuthenticateAsync(_credential.Email, _credential.Password);
             if (loginSuccesfull)
-                NavigationManager.NavigateTo("/fetchpasswords");
+            {
+                AuthManager.AuthenticateUser();
+                NavigationManager.NavigateTo("/fetchpasswords");   
+            }
+                
             else
                 IncorrectCredentialsMessage();
 
