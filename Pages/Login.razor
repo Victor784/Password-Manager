@@ -7,7 +7,7 @@
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
 @inject UserApiClient userApi
-@inject Services.AuthenticationService AuthManager;
+@inject Services.UserStateService UserStateService;
 
 <div class="login_page">
     <div class="text-center">
@@ -42,10 +42,11 @@
         private async void  Authenticate()
         {
             @* .... perform authentication using _credential fields*@
-            bool loginSuccesfull = await userApi.AuthenticateAsync(_credential.Email, _credential.Password);
-            if (loginSuccesfull)
+            var result = await userApi.AuthenticateAsync(_credential.Email, _credential.Password);
+            if (result.isAuthenticated)
             {
-                AuthManager.AuthenticateUser();
+                UserStateService.AuthenticateUser();
+                UserStateService.setUserId(result.id);
                 NavigationManager.NavigateTo("/fetchpasswords");   
             }
                 

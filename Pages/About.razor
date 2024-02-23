@@ -1,12 +1,12 @@
 ﻿@page "/about"
 
 @inject NavigationManager NavigationManager;
-@inject Services.AuthenticationService AuthManager;
+@inject Services.UserStateService UserStateService;
 
 @code {
     protected override void OnInitialized()
     {
-        if (!AuthManager.IsUserAuthenticated)
+        if (!UserStateService.IsUserAuthenticated)
         {
             NavigationManager.NavigateTo("/login");
         }

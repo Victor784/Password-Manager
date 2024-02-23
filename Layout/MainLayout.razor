@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using Elements
 
-@inject Services.AuthenticationService AuthManager;
+@inject Services.UserStateService UserStateService;
 
 <div class="page">
     <div class="sidebar">
@@ -29,7 +29,7 @@
 
     private void LogOutUser()
     {
-        AuthManager.DeauthenticateUser();
+        UserStateService.DeauthenticateUser();
     }
 
 }

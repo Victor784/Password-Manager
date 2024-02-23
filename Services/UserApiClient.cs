@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text;
 
+
 namespace PasswordManagerClient.Services
 {
     public class UserApiClient
@@ -36,7 +37,7 @@ namespace PasswordManagerClient.Services
             return new List<User>();
         }
 
-        public async Task<bool> AuthenticateAsync(string email, string password)
+        public async Task<(bool isAuthenticated, string id)> AuthenticateAsync(string email, string password)
         {
             try
             {
@@ -55,18 +56,29 @@ namespace PasswordManagerClient.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseData = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+
+                    if (responseData.ContainsKey("userId"))
+                    {
+                        return (true, responseData["userId"].ToString());
+                    }
+                    else
+                    {
+                        return (false,"");
+                    }
                 }
                 else
                 {
-                    return false;
+                    return (false, "");
                 }
             }
             catch (Exception ex)
             {
                 // Handle any exceptions
                 Console.WriteLine($"Error: {ex.Message}");
-                return false;
+                return (false, "An occured in API client");
             }
         }
     }

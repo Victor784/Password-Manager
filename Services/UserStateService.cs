@@ -1,9 +1,9 @@
 ﻿namespace PasswordManagerClient.Services
 {
-    public class AuthenticationService
+    public class UserStateService
     {
         private bool _isUserAuthenticated = false;
-
+        private int _userId = 0;
         public bool IsUserAuthenticated
         {
             get { return _isUserAuthenticated; }
@@ -17,6 +17,16 @@
         public void DeauthenticateUser()
         {
             IsUserAuthenticated = false;
+        }
+
+        public void setUserId(string userId)
+        {
+             int.TryParse(userId, out int _userId);
+        }
+
+        public int getUserId()
+        {
+            return _userId;
         }
     }
 

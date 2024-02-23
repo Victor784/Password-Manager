@@ -5,6 +5,7 @@
 @inject PasswordApiClient passwordApi
 @inject IClipboardService ClipboardService
 @inject PasswordGenerator randomPasswordGenerator
+@inject UserStateService userStateService
 
 <div>
 
@@ -65,8 +66,7 @@
 
     public  async Task SubmitAddForm()
     {
-        //Instead of 1 we should use the user_id 
-        Password pass = new Password(1, website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), months_until_expired);
+        Password pass = new Password(userStateService.getUserId() , website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), months_until_expired);
         var response = await passwordApi.AddPasswordAsync(pass);
         await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);
