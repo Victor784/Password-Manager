@@ -18,5 +18,6 @@ builder.Services.AddScoped<IClipboardService, ClipboardService>();
 builder.Services.AddScoped<ExpirationCalculator>();
 builder.Services.AddScoped<PasswordGenerator>();
 builder.Services.AddScoped<UserStateService>();
+builder.Services.AddScoped<FieldInputChecker>();
 
 await builder.Build().RunAsync();
