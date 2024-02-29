@@ -21,7 +21,8 @@
 
         public void setUserId(string userId)
         {
-             int.TryParse(userId, out int _userId);
+            //int.TryParse(userId, out int _userId);
+            _userId = Int32.Parse(userId);
         }
 
         public int getUserId()

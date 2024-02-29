@@ -12,11 +12,11 @@ namespace PasswordManagerClient.Services
             this.httpClient = httpClient;
         }
 
-        public async Task<List<Password>?> GetPasswordsAsync()
+        public async Task<List<Password>?> GetPasswordsAsync(int user_id)
         {
             try
             {
-                var response = await httpClient.GetAsync("api/passwords");
+                var response = await httpClient.GetAsync("api/passwords/" + user_id.ToString());
 
                 if (response.IsSuccessStatusCode)
                 {
