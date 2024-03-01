@@ -11,7 +11,7 @@
 
     <div class="form-group">
         <label>Website:</label>
-        <input type="text" @bind="website" />
+        <input type="text" @bind="website" @onfocusout="() => checkIfWebsiteIsUnique(website)"/>
     </div>
     <div class="form-group">
         <label>Email:</label>
@@ -112,4 +112,23 @@
         passInputHasText = true;
         return Task.CompletedTask;
     }
+}
+
+@code{
+    void checkIfWebsiteIsUnique(string website)
+    {
+        var allPasswords = userStateService.getUserPasswords().Result;
+
+        bool isUnique = true;
+        foreach (var password in allPasswords)
+        {
+            if (password.password_value == website)
+            {
+                isUnique = true;
+                break;
+            }
+        }
+        //TODO After the message toaster is created enable its vissibility here 
+    }
+
 }
