@@ -47,7 +47,8 @@
             {
                 UserStateService.AuthenticateUser();
                 UserStateService.setUserId(result.id);
-                NavigationManager.NavigateTo("/fetchpasswords");   
+                UserStateService.setUserPasswords();
+                NavigationManager.NavigateTo("/fetchpasswords");
             }
                 
             else

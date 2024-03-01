@@ -1,9 +1,19 @@
-﻿namespace PasswordManagerClient.Services
+﻿using PasswordManagerClient.ApiReturnTypes;
+using PasswordManagerClient.Services;
+
+namespace PasswordManagerClient.Services
 {
     public class UserStateService
     {
         private bool _isUserAuthenticated = false;
         private int _userId = 0;
+        private List<Password> _userPasswords;
+        private readonly PasswordApiClient _passwordApiClient;
+
+        public UserStateService(PasswordApiClient passwordApiClient)
+        {
+            _passwordApiClient = passwordApiClient;
+        }
         public bool IsUserAuthenticated
         {
             get { return _isUserAuthenticated; }
@@ -28,6 +38,20 @@
         public int getUserId()
         {
             return _userId;
+        }
+
+        public async Task<List<Password>> getUserPasswords()
+        {
+            if (_userPasswords == null)
+            {
+                await setUserPasswords();
+            }
+            return _userPasswords;
+        }
+
+        public async Task setUserPasswords()
+        {
+            _userPasswords = await _passwordApiClient.GetPasswordsAsync(_userId);
         }
     }
 

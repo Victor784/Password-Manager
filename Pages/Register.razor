@@ -58,6 +58,7 @@
                 //The user has been successfully added
                 userStateService.AuthenticateUser();
                 userStateService.setUserId(ret.ToString());
+                userStateService.setUserPasswords();
                 //TODO: send an email to the user for account confirmation
                 NavigationManager.NavigateTo("/fetchpasswords");
             }
