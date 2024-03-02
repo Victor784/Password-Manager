@@ -6,12 +6,18 @@
 @inject ExpirationCalculator expirationCalculator
 @inject IClipboardService ClipboardService
 @inject PasswordGenerator randomPasswordGenerator
+@inject UserStateService userStateService
 
 <div>
 
     <div class="form-group">
-        <label>Website:</label>
-        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "website")' value="@CurrentWebsite" />
+        <label>Website:
+            @if (displaySameWebsiteWarning)
+            {
+                <p>a similar entry already exists</p>
+            }
+        </label>
+        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "website")' value="@CurrentWebsite" @onfocusout="() => checkIfNewWebsiteIsUnique(CurrentEmail)" />
     </div>
     <div class="form-group">
         <label>Email:</label>
@@ -64,6 +70,7 @@
 @code {
     private string passwordInputType = "password";
     private bool passInputHasText = false;
+    private bool displaySameWebsiteWarning = false;
     [Parameter]
     public EventCallback<int> CloseModalParent { get; set; }
     [Parameter]
@@ -210,4 +217,29 @@
         return Task.CompletedTask;
     }
 
+}
+
+@code {
+    void checkIfNewWebsiteIsUnique(string currentWebsite)
+    {
+        var allPasswords = userStateService.getUserPasswords().Result;
+
+        bool isUnique = true;
+        foreach (var password in allPasswords)
+        {
+            if (password.associated_email == website && password.associated_email != currentWebsite) // chheck if new website is not present already in the list
+            {
+                isUnique = false;
+                break;
+            }
+        }
+        if (isUnique)
+        {
+            displaySameWebsiteWarning = false;
+        }
+        else
+        {
+            displaySameWebsiteWarning = true;
+        }
+    }
 }

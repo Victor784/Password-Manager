@@ -10,7 +10,12 @@
 <div>
 
     <div class="form-group">
-        <label>Website:</label>
+        <label>Website:
+            @if (displaySameWebsiteWarning)
+            {
+               <p>a similar entry already exists</p>
+            }
+        </label>
         <input type="text" @bind="website" @onfocusout="() => checkIfWebsiteIsUnique(website)"/>
     </div>
     <div class="form-group">
@@ -59,6 +64,7 @@
     private string months_until_expired = "1 month";
     private string passwordInputType = "password";
     private bool passInputHasText = false;
+    private bool displaySameWebsiteWarning = false;
     [Parameter]
     public EventCallback<int> CloseModalParent { get; set; }
     [Parameter]
@@ -122,13 +128,19 @@
         bool isUnique = true;
         foreach (var password in allPasswords)
         {
-            if (password.password_value == website)
+            if (password.associated_email == website)
             {
-                isUnique = true;
+                isUnique = false;
                 break;
             }
         }
-        //TODO After the message toaster is created enable its vissibility here 
+        if (isUnique)
+        {
+            displaySameWebsiteWarning = false;
+        }
+        else
+        {
+            displaySameWebsiteWarning = true;
+        }     
     }
-
 }
