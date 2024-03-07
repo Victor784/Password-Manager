@@ -141,6 +141,17 @@ tr.table_row:hover {
     min-height: 30px;
 }
 
+tr.red_table_row:hover {
+    background: rgba(255, 100, 100, 0.1);
+}
+
+.red_table_row {
+    height: 42px;
+    max-height: 30px;
+    min-height: 30px;
+    background: rgba(255, 200, 200, 0.1);
+}
+
 td {
     height: 30px;
     max-height: 30px;
