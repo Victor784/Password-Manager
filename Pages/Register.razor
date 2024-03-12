@@ -15,6 +15,7 @@
         <div class="container_for_box_centering">
             <div class="register_box">
                 <EditForm class="form-signin mb-4" Model="@_user" OnSubmit="@RegisterUser">
+                    <div>@ErrorMessage</div>
                     <div class="form-group">
                         <InputText class="form-control" aria-describedby="emailHelp" placeholder="Name" @bind-Value=@_user.name @onfocusout="@(() => OnInputFocusOut( _user.name , RegisterFormEnum.name))" />
                     </div>
@@ -46,6 +47,7 @@
         private RegisterFormStatus _registerFormStatus = new RegisterFormStatus();
         string confirmPasswordString = "";
         bool passwordConfirmationIsOK = false;
+        string ErrorMessage = "";
         private async Task RegisterUser()
         {
             _user.is_active = true;
@@ -55,12 +57,20 @@
             var ret = await userApiClient.AddUserAsync(_user);
             if(ret != -1)
             {
-                //The user has been successfully added
-                userStateService.AuthenticateUser();
-                userStateService.setUserId(ret.ToString());
-                userStateService.setUserPasswords();
-                //TODO: send an email to the user for account confirmation
-                NavigationManager.NavigateTo("/fetchpasswords");
+                if(ret != -2)
+                {
+                    //The user has been successfully added
+                    userStateService.AuthenticateUser();
+                    userStateService.setUserId(ret.ToString());
+                    userStateService.setUserPasswords();
+                    //TODO: send an email to the user for account confirmation
+                    NavigationManager.NavigateTo("/fetchpasswords");
+                }
+                else
+                {
+                    ShowEmaiAlreadyInUse();
+                }
+                
             }
             else
             {
@@ -139,3 +149,11 @@
         }
     }
 </div>
+
+@code{
+
+    void ShowEmaiAlreadyInUse()
+    {
+        ErrorMessage = "Email is already in use. Please choose another email.";
+    }
+}

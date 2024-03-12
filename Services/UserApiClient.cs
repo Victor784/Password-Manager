@@ -96,6 +96,11 @@ namespace PasswordManagerClient.Services
                     //var createdUserId = await response.Content.ReadFromJsonAsync<int>();
                     return createdUser.id;
                 }
+                else if(response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return -2;
+                }
+
             }
             catch (Exception ex)
             {
