@@ -27,7 +27,7 @@
                         <ValidationMessage For="@(() => _credential.Password)" />
                         </div>
                         <div class="form-group">
-                        <button type="submit" id="login" name="login" class="btn btn-primary" disabled="@(!context.IsModified() || !context.Validate())" >Login</button>
+                        <button type="submit" id="login" name="login" class="btn btn-primary" disabled="@((!context.IsModified() || !context.Validate()) || loginAttempts >= 5)" >Login</button>
                     </div>
                     </EditForm>
                     <div class="login_links">
@@ -41,7 +41,7 @@
     @code {
 
         private Credential _credential = new Credential();
-
+        private int loginAttempts = 0;
         private async void  Authenticate()
         {
             @* .... perform authentication using _credential fields*@
@@ -63,6 +63,8 @@
         {
             //TODO make a message appear if the user inputs an incorrect password
             // making the backround red would be a nice ideea
+            loginAttempts += 1;
+            StateHasChanged();
         }
 }
 </div>
