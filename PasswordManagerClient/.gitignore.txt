@@ -1,0 +1,9 @@
+*.log
+obj/
+bin/
+Properties/
+PasswordManagerClient.csproj
+PasswordManagerClient.csproj.user
+bash.exe.stackdump
+mintty.exe.stackdump
+**/logs/

@@ -1,0 +1,146 @@
+﻿@using ApiReturnTypes
+@using System
+@using PasswordManagerClient.Services
+@using BlazorBootstrap
+@inject PasswordApiClient passwordApi
+@inject IClipboardService ClipboardService
+@inject PasswordGenerator randomPasswordGenerator
+@inject UserStateService userStateService
+
+<div>
+
+    <div class="form-group">
+        <label>Website:
+            @if (displaySameWebsiteWarning)
+            {
+               <p>a similar entry already exists</p>
+            }
+        </label>
+        <input type="text" @bind="website" @onfocusout="() => checkIfWebsiteIsUnique(website)"/>
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="text" @bind="email" />
+    </div>
+    <div class="form-group">
+        <label style=" display: flex">Password:
+            <div class="password_small_buttons" style="width: 100px ; height: 24px">
+                <Button class="btn special_btn" @onclick="GenerateRandomPass"><Icon Name="IconName.CaretRightSquare" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                @if (passInputHasText)
+                {
+
+                    <Button class="btn special_btn" @onclick="SwitchPasswordVisibility"><Icon Name="@(passwordInputType == "password" ? IconName.Eye : IconName.EyeFill)" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                    <Button class="btn special_btn" @onclick="(e) => CopyPasswordToClipboard(password)"><Icon Name="IconName.Copy" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+            
+                }
+            </div>
+        </label>
+        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password"/>
+    </div>
+    <div class="form-group">
+        <label>Password lifetime :</label>
+        <InputRadioGroup @bind-Value="@months_until_expired">
+            <div class="label_radio_btn_element">
+                <label>1 month</label> <InputRadio Value="@("1 month")" class="add_pass_modal_radio_btn" />
+            </div>
+            <div class="label_radio_btn_element">
+                <label>2 months</label> <InputRadio Value="@("2 months")" class="add_pass_modal_radio_btn" />
+            </div>
+            <div class="label_radio_btn_element">
+                <label>3 months</label> <InputRadio Value="@("3 months")" class="add_pass_modal_radio_btn" />
+            </div>
+        </InputRadioGroup>
+    </div>
+    <div class="form_buttons_group">
+        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm">Save changes</Button>
+        <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
+    </div>
+</div>
+
+@code {
+    private string website = "";
+    private string email = "";
+    private string password = "";
+    private string months_until_expired = "1 month";
+    private string passwordInputType = "password";
+    private bool passInputHasText = false;
+    private bool displaySameWebsiteWarning = false;
+    [Parameter]
+    public EventCallback<int> CloseModalParent { get; set; }
+    [Parameter]
+    public EventCallback UpdateTable { get; set; }
+
+    public  async Task SubmitAddForm()
+    {
+        Password pass = new Password(userStateService.getUserId() , website, email, password, DateTime.Now.Date.ToString("dd-MMM-yyyy"), DateTime.Now.Date.ToString("dd-MMM-yyyy"), months_until_expired);
+        var response = await passwordApi.AddPasswordAsync(pass);
+        await UpdateTable.InvokeAsync();
+        await CloseModalParent.InvokeAsync(response);
+    }
+
+    public async void CloseModal()
+    {
+        await CloseModalParent.InvokeAsync(-1);
+    }
+
+
+    public void ManagePasswordInputChange(ChangeEventArgs e)
+    {
+        password = e.Value.ToString();
+        if (password != "")
+            passInputHasText = true;
+        else
+            passInputHasText = false;
+        StateHasChanged();
+    }
+
+    public async void SwitchPasswordVisibility()
+    {
+        if(passwordInputType == "password")
+        {
+            passwordInputType = "text";
+        }
+        else if (passwordInputType == "text")
+        {
+            passwordInputType = "password";
+        }
+
+    }
+
+    async void CopyPasswordToClipboard(string copied_pass)
+    {
+        await ClipboardService.CopyToClipboard(copied_pass);
+    }
+
+    public Task GenerateRandomPass()
+    {
+        password = randomPasswordGenerator.generateRandomPassword();
+        passInputHasText = true;
+        return Task.CompletedTask;
+    }
+}
+
+@code{
+    void checkIfWebsiteIsUnique(string website)
+    {
+        var allPasswords = userStateService.getUserPasswords().Result;
+
+        bool isUnique = true;
+        foreach (var password in allPasswords)
+        {
+            if (password.associated_email == website)
+            {
+                isUnique = false;
+                break;
+            }
+        }
+        if (isUnique)
+        {
+            displaySameWebsiteWarning = false;
+        }
+        else
+        {
+            displaySameWebsiteWarning = true;
+        }     
+    }
+}

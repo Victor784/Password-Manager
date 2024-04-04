@@ -1,0 +1,18 @@
+﻿@page "/account"
+@inject HttpClient Http
+
+@inject NavigationManager NavigationManager;
+@inject Services.UserStateService UserStateService;
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!UserStateService.IsUserAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}
+
+
+<PageTitle>Account</PageTitle>
