@@ -52,7 +52,7 @@
         </InputRadioGroup>
     </div>
     <div class="form_buttons_group">
-        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm">Save changes</Button>
+        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm" Disabled="@(!AllFieldsFilled())">Add entry</Button>
         <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
     </div>
 </div>
@@ -142,5 +142,16 @@
         {
             displaySameWebsiteWarning = true;
         }     
+    }
+}
+
+@code {
+    private bool AllFieldsFilled()
+    {
+
+    return !string.IsNullOrWhiteSpace(website) &&
+           !string.IsNullOrWhiteSpace(email) &&
+           !string.IsNullOrWhiteSpace(password);
+    
     }
 }

@@ -7,3 +7,5 @@ PasswordManagerClient.csproj.user
 bash.exe.stackdump
 mintty.exe.stackdump
 **/logs/
+*.sln
+*.csproj
