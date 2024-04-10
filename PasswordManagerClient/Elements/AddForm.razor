@@ -78,7 +78,7 @@
         await CloseModalParent.InvokeAsync(response);
     }
 
-    public async void CloseModal()
+    public async Task CloseModal()
     {
         await CloseModalParent.InvokeAsync(-1);
     }
@@ -94,7 +94,7 @@
         StateHasChanged();
     }
 
-    public async void SwitchPasswordVisibility()
+    public async Task SwitchPasswordVisibility()
     {
         if(passwordInputType == "password")
         {
@@ -107,7 +107,7 @@
 
     }
 
-    async void CopyPasswordToClipboard(string copied_pass)
+    async Task CopyPasswordToClipboard(string copied_pass)
     {
         await ClipboardService.CopyToClipboard(copied_pass);
     }

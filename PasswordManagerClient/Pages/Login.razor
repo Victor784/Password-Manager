@@ -41,7 +41,7 @@
 
         private Credential _credential = new Credential();
         private int loginAttempts = 0;
-        private async void  Authenticate()
+        private async Task  Authenticate()
         {
             @* .... perform authentication using _credential fields*@
             var result = await userApi.AuthenticateAsync(_credential.Email, _credential.Password);
