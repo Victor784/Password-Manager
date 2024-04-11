@@ -25,11 +25,11 @@
     <div class="form-group">
         <label style=" display: flex">Password:
             <div class="password_small_buttons" style="width: 100px ; height: 24px">
-                <Button class="btn special_btn" @onclick="GenerateRandomPass"><Icon Name="IconName.CaretRightSquare" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                <Button class="btn special_btn" style="border: transparent;" @onclick="GenerateRandomPass"><Icon Name="@(generateBtnClicked ? IconName.CaretRightSquareFill : IconName.CaretRightSquare)" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
                 @if (passInputHasText)
                 {
 
-                    <Button class="btn special_btn" @onclick="SwitchPasswordVisibility"><Icon Name="@(passwordInputType == "password" ? IconName.Eye : IconName.EyeFill)" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
+                    <Button class="btn special_btn" style="border: transparent;" @onclick="SwitchPasswordVisibility"><Icon Name="@(passwordInputType == "password" ? IconName.Eye : IconName.EyeFill)" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
                     <Button class="btn special_btn" @onclick="(e) => CopyPasswordToClipboard(password)"><Icon Name="IconName.Copy" Color="IconColor.Muted" Size="IconSize.x6" /></Button>
             
                 }
@@ -58,6 +58,7 @@
 </div>
 
 @code {
+    bool generateBtnClicked = false;
     private string website = "";
     private string email = "";
     private string password = "";
@@ -91,6 +92,7 @@
             passInputHasText = true;
         else
             passInputHasText = false;
+        generateBtnClicked = false;
         StateHasChanged();
     }
 
@@ -116,7 +118,10 @@
     {
         password = randomPasswordGenerator.generateRandomPassword();
         passInputHasText = true;
+        if (!generateBtnClicked)
+            generateBtnClicked = true;
         return Task.CompletedTask;
+        
     }
 }
 
