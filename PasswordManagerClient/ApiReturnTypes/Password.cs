@@ -11,11 +11,11 @@ namespace PasswordManagerClient.ApiReturnTypes
         public string password_value { get; set; }
         public string time_of_creation { get; set; }
         public string time_of_last_update { get; set; }
-        public string? months_until_expired { get; set; }
+        public string months_until_expired { get; set; }
 
         public Password() { }
 
-        public Password(int id, int user_id, string associated_website , string associated_email, string password_value, string time_of_creation, string time_of_last_update, string months_until_expired = "") 
+        public Password(int id, int user_id, string associated_website , string associated_email, string password_value, string time_of_creation, string time_of_last_update, string months_until_expired) 
         {
             this.id = id;
             this.user_id = user_id;  
@@ -27,7 +27,7 @@ namespace PasswordManagerClient.ApiReturnTypes
             this.months_until_expired = months_until_expired;
         }
 
-        public Password(int user_id, string associated_website , string associated_email, string password_value, string time_of_creation, string time_of_last_update, string months_until_expired = "")
+        public Password(int user_id, string associated_website , string associated_email, string password_value, string time_of_creation, string time_of_last_update, string months_until_expired)
         {
             this.id = 0;
             this.user_id = user_id;
