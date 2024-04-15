@@ -42,8 +42,8 @@ namespace PasswordManagerClient.Services
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine(response);
-                    var createdPasswordId = await response.Content.ReadFromJsonAsync<int>();
-                    return createdPasswordId;
+                    // TODO; return the id of the newly created passowrd
+                    return 1;
                 }
             }
             catch (Exception ex)
