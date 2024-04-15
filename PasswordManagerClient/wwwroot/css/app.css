@@ -201,6 +201,7 @@ td {
 .table {
     width: 1000px;
     background-color: white;
+    table-layout: fixed;
 }
 
 .column_with_btns
