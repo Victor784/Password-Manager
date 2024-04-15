@@ -82,22 +82,26 @@
     [Parameter]
     public EventCallback UpdateTable { get; set; }
 
+    private int passwordId;
     private string website;
     private string email;
     private string password;
     private string exp_date;
+    private int userId;
+    private string monthsUntilExpired;
+    private string timeOfCreation;
     private  string daysUntilExpiration = "";
     bool dataWasNotChangedByUser = true;
     string CurrentWebsite = "";
     string CurrentEmail = "";
     string CurrentPassword = "";
 
-    
+
 
     public async Task SubmitUpdateForm()
     {
-        Password updatedPassword = new Password(PasswordToBeChanged.user_id, website, email, password, PasswordToBeChanged.time_of_creation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), (exp_date != "") ? exp_date : PasswordToBeChanged.months_until_expired);
-        var response = await passwordApi.UpdatePasswordAsync(PasswordToBeChanged.user_id, updatedPassword);
+        Password updatedPassword = new Password(userId, website, email, password, timeOfCreation, DateTime.Now.Date.ToString("dd-MMM-yyyy"), (exp_date != "") ? exp_date : monthsUntilExpired);
+        var response = await passwordApi.UpdatePasswordAsync(passwordId, updatedPassword);
         await UpdateTable.InvokeAsync();
         await CloseModalParent.InvokeAsync(response);
     }
@@ -111,6 +115,10 @@
     {
         base.OnInitialized();
 
+        passwordId = PasswordToBeChanged.id;
+        timeOfCreation = PasswordToBeChanged.time_of_creation;
+        monthsUntilExpired = PasswordToBeChanged.months_until_expired;
+        userId = PasswordToBeChanged.user_id;
         website = PasswordToBeChanged.associated_website;
         email = PasswordToBeChanged.associated_email;
         password = PasswordToBeChanged.password_value;
@@ -128,7 +136,7 @@
         {
             case "website":
                 {
-                    if (e.Value.ToString() != PasswordToBeChanged.associated_website)
+                    if (e.Value.ToString() != website)
                         EnableSaveBtnState();
                     else
                         dataWasNotChangedByUser = true;
@@ -137,7 +145,7 @@
                 }
             case "email":
                 {
-                    if (e.Value.ToString() != PasswordToBeChanged.associated_email)
+                    if (e.Value.ToString() != email)
                         EnableSaveBtnState();
                     else
                         dataWasNotChangedByUser = true;
@@ -146,7 +154,7 @@
                 }
             case "password":
                 {
-                    if (e.Value.ToString() != PasswordToBeChanged.password_value)
+                    if (e.Value.ToString() != password)
                         EnableSaveBtnState();
                     else
                         dataWasNotChangedByUser = true;
