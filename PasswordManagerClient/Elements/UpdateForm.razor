@@ -17,11 +17,11 @@
                 <p>a similar entry already exists</p>
             }
         </label>
-        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "website")' value="@CurrentWebsite" @onfocusout="() => checkIfNewWebsiteIsUnique(CurrentEmail)" />
+        <input tabindex="1" type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "website")' value="@CurrentWebsite" @onfocusout="() => checkIfNewWebsiteIsUnique(CurrentEmail)" />
     </div>
     <div class="form-group">
         <label>Email:</label>
-        <input type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "email")' value="@CurrentEmail" />
+        <input tabindex="2" type="text" @onchange='(e) => CheckForUpdateAndUpdateSaveBtnState(e, "email")' value="@CurrentEmail" />
     </div>
     <div class="form-group">
         <label style=" display: flex">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </label>
-        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password" />
+        <input tabindex="3" type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password" />
     </div>
     <div class="form-group">
         <label>Password lifetime:</label>
@@ -64,8 +64,8 @@
         <p>Expires in : @daysUntilExpiration</p>
     </div>
     <div class="form_buttons_group">
-        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitUpdateForm" Disabled="@dataWasNotChangedByUser">Save changes</Button>
-        <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
+        <button tabindex="4" class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitUpdateForm" Disabled="@dataWasNotChangedByUser">Save changes</button>
+        <button tabindex="5" class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</button>
     </div>
 </div>
 

@@ -16,11 +16,11 @@
                <p>a similar entry already exists</p>
             }
         </label>
-        <input type="text" @bind="website" @onfocusout="() => checkIfWebsiteIsUnique(website)"/>
+        <input tabindex="1" type="text" @bind="website" @onfocusout="() => checkIfWebsiteIsUnique(website)"/>
     </div>
     <div class="form-group">
         <label>Email:</label>
-        <input type="text" @bind="email" />
+        <input tabindex="2" type="text" @bind="email" />
     </div>
     <div class="form-group">
         <label style=" display: flex">Password:
@@ -35,7 +35,7 @@
                 }
             </div>
         </label>
-        <input type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password"/>
+        <input tabindex="3" type="@passwordInputType" @oninput="ManagePasswordInputChange" @bind="password"/>
     </div>
     <div class="form-group">
         <label>Password lifetime :</label>
@@ -52,8 +52,8 @@
         </InputRadioGroup>
     </div>
     <div class="form_buttons_group">
-        <Button class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm" Disabled="@(!AllFieldsFilled())">Add entry</Button>
-        <Button class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</Button>
+        <button tabindex ="4" class="btn btn-primary" Color="ButtonColor.Primary" id="save-button" @onclick="SubmitAddForm" Disabled="@(!AllFieldsFilled())">Add entry</button>
+        <button tabindex="5" class="btn btn-primary" Color="ButtonColor.Secondary" @onclick="CloseModal">Close</button>
     </div>
 </div>
 
