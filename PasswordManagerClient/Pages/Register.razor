@@ -54,6 +54,7 @@
             _user.date_of_registration = DateTime.Now.Date.ToString("dd-MMM-yyyy");
 
             var ret = await userApiClient.AddUserAsync(_user);
+
             if(ret != -1)
             {
                 if(ret != -2)
@@ -62,6 +63,7 @@
                     userStateService.AuthenticateUser();
                     userStateService.setUserId(ret.ToString());
                     userStateService.setUserPasswords();
+                    userStateService.setUserToken(userApiClient.getTokenForUser(ret.ToString()).Result);
                     //TODO: send an email to the user for account confirmation
                     NavigationManager.NavigateTo("/fetchpasswords");
                 }

@@ -38,7 +38,7 @@ namespace PasswordManagerClient.Services
             return new List<User>();
         }
 
-        public async Task<(bool isAuthenticated, string id)> AuthenticateAsync(string email, string password)
+        public async Task<(bool isAuthenticated, string id, string token)> AuthenticateAsync(string email, string password)
         {
             try
             {
@@ -61,25 +61,25 @@ namespace PasswordManagerClient.Services
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var responseData = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
 
-                    if (responseData.ContainsKey("userId"))
+                    if (responseData.ContainsKey("userId") && responseData.ContainsKey("token"))
                     {
-                        return (true, responseData["userId"].ToString());
+                        return (true, responseData["userId"].ToString(), responseData["token"].ToString());
                     }
                     else
                     {
-                        return (false,"");
+                        return (false,"", "");
                     }
                 }
                 else
                 {
-                    return (false, "");
+                    return (false, "" , "");
                 }
             }
             catch (Exception ex)
             {
                 // Handle any exceptions
                 Console.WriteLine($"Error: {ex.Message}");
-                return (false, "An error occured in API client");
+                return (false, "An error occured in API client" , "");
             }
         }
 
@@ -107,6 +107,70 @@ namespace PasswordManagerClient.Services
                 Console.WriteLine(ex);
             }
             return -1;
+        }
+
+        public async Task<(bool isAuthenticated, string id)> AuthenticateAsync(string token)
+        {
+            try
+            {
+
+                var tokenCredentials = new
+                {
+                    Token = token
+                };
+
+                var json = JsonSerializer.Serialize(tokenCredentials);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("api/users/authToken", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var responseData = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+
+                    if (responseData.ContainsKey("userId"))
+                    {
+                        return (true, responseData["userId"].ToString());
+                    }
+                    else
+                    {
+                        return (false, "");
+                    }
+                }
+                else
+                {
+                    return (false, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return (false, "An error occured in API client");
+            }
+        }
+
+        public async Task<string> getTokenForUser(string id)
+        {
+            try
+            {
+                var response = await httpClient.GetAsync("api/user/tokens/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var token = await response.Content.ReadFromJsonAsync<string>();
+                    Console.WriteLine(token);
+                    return token;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return "";
         }
     }
 }

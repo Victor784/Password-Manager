@@ -47,6 +47,7 @@
             var result = await userApi.AuthenticateAsync(_credential.Email, _credential.Password);
             if (result.isAuthenticated)
             {
+                UserStateService.setUserToken(result.token);
                 UserStateService.AuthenticateUser();
                 UserStateService.setUserId(result.id);
                 UserStateService.setUserPasswords();

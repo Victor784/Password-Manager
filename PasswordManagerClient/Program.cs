@@ -19,5 +19,6 @@ builder.Services.AddScoped<ExpirationCalculator>();
 builder.Services.AddScoped<PasswordGenerator>();
 builder.Services.AddScoped<UserStateService>();
 builder.Services.AddScoped<FieldInputChecker>();
+builder.Services.AddScoped<CookieStorageAccessor>();
 
 await builder.Build().RunAsync();
